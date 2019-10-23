@@ -4,3 +4,28 @@ services:
     build: .
     volumes:
       - ./:/var/www
+    depends_on:
+      - productapp-mysql
+      - productapp-redis
+  productapp-mysql:
+    image: mysql:5.7.22
+    command: --innodb-use-native-aio=0
+    ports:
+      - "3306"
+    volumes:
+      - "./.docker/dbdata:/var/lib/mysql"
+    environment:
+      MYSQL_DATABASE: productapp
+      MYSQL_ROOT_PASSWORD: root
+  productapp-redis:
+    image: redis:alpine
+    expose:
+      - "6379"
+  productapp-nginx:
+    build: ./.docker/nginx
+    volumes:
+      - ./:/var/www
+    ports:
+      - "8001:80"
+    depends_on:
+      - productapp
