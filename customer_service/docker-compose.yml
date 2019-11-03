@@ -29,3 +29,7 @@ services:
       - "8002:80"
     depends_on:
       - customerapp
+networks:
+  default:
+    external:
+      name: msjourney-network
