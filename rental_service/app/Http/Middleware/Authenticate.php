@@ -15,7 +15,16 @@ class Authenticate extends Middleware
     protected function redirectTo($request)
     {
         if (! $request->expectsJson()) {
-            return route('login');
+//            return route('login');
+            /**
+             * redirect to SSO login URL instead of Laravel default URL
+             */
+            return route(
+                'saml2_login',
+                [
+                    'idpName' => 'RENTAL'
+                ]
+            );
         }
     }
 }
